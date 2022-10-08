@@ -1,5 +1,6 @@
 
-var arr = new Array();
+var old_data;
+console.log(localStorage.data)
 
 function addItems() {
     const inpHorInicial = document.querySelector("#horInicial");
@@ -13,34 +14,32 @@ function addItems() {
     const op = Math.abs(time2.getTime() - time1.getTime());
     const resultado = convertMsToHM(op);
     
-    localStorage.myArr = resultado;
-
-    if(localStorage.myArr) {
-        arr = localStorage.getItem("myArr");
+    //Secção Salvar Array
+    var new_data = resultado;
+    if(localStorage.getItem('data') == null){
+        localStorage.setItem('data', '[]');
     }
-
-    console.log(typeof(arr))
     
-    arr.push(resultado);
+    old_data = JSON.parse(localStorage.getItem('data'));
+    old_data.push(new_data);
+
+    localStorage.setItem('data', JSON.stringify(old_data))
+
+    ////////////////////////////////////////////////////////
     document.getElementById("horInicial").value = "";
     document.getElementById("horFinal").value = "";
-    localStorage.myArr = JSON.stringify(arr);
     console.log("Resultado: " + resultado);
-
     document.getElementById("hI").innerHTML = horInicial + ':' + minFinal
     document.getElementById("hF").innerHTML = horFinal + ':' + minFinal;
     document.getElementById("result").innerHTML = resultado;
 }
 
+function showItems() {
+    let resultDIV = document.getElementById('d');
+    resultDIV.innerHTML = localStorage.data;
+    
 
-
-
-function delItems() {
-    arr = [];
-    localStorage.myArr = JSON.stringify(arr);
 }
-
-
 
 function convertMsToHM(ml) {
     let seconds = Math.floor(ml / 1000);
